@@ -1,0 +1,31 @@
+<!-- 
+  Netlify Configuration Block
+  Add this to the <head> of your HTML pages (before storageSync.js is loaded)
+  
+  Modify the window.STORAGE_API_URL if your API is on a different domain
+-->
+
+<script>
+  // Configure storage sync for your deployment environment
+  
+  // For local development or same-origin:
+  // window.STORAGE_API_URL = '/api'; // This is the default
+  
+  // For Netlify with external server:
+  window.STORAGE_API_URL = (function() {
+    // Auto-detect from environment variable or use default
+    const apiUrl = window.location.hostname === 'localhost' 
+      ? '/api'  // Local development
+      : process.env.REACT_APP_API_URL // Build-time environment variable
+        || window.location.origin + '/api'; // Fallback to current domain
+    
+    console.log('[StorageSync] Using API endpoint:', apiUrl);
+    return apiUrl;
+  })();
+  
+  // Optional: Force polling instead of SSE
+  // window.STORAGE_USE_POLLING = true;
+  
+  // Optional: Adjust polling frequency (milliseconds)
+  // window.STORAGE_POLL_INTERVAL = 3000; // Poll every 3 seconds
+</script>

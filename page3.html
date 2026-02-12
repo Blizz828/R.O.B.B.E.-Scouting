@@ -448,6 +448,40 @@
   },
   {
     "city": "Montvale",
+    "country": "USA",
+    "key": "frc1690",
+    "name": "Montvale High School",
+    "nickname": "Example Team",
+    "rookie_year": 2005,
+    "school_name": "Montvale High School",
+    "state_prov": "New Jersey",
+    "team_number": 1690
+  }
+];
     </script>
+    
+    <!-- Global Storage Sync System -->
+    <script src="storageSync.js"></script>
+    <script src="globalStorageAdapter.js"></script>
+    
+    <!-- App Logic -->
     <script src="app.js"></script>
+    
+    <!-- App-specific Storage Sync -->
+    <script src="appStorageSync.js"></script>
+    
+    <!-- Initialize global storage on page load -->
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize the global storage adapter
+        await globalStorageAdapter.init({ autoPull: true, overwrite: false });
+        
+        // Initialize app-specific storage sync
+        await appStorageSync.init();
+        appStorageSync.hookAppFunctions();
+        
+        console.log('Global storage and app sync initialized on page3.html');
+      });
+    </script>
+  </body>
 </html>

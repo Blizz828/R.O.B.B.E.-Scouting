@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R.O.B.B.E. Scouting - Firebase Version</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK (v10.8.1) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+      // 🔥 FIREBASE CONFIG - REPLACE WITH YOUR SETTINGS
+      // Get these from Firebase Console > Project Settings > General
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",                    // Replace this
+        authDomain: "your-project.firebaseapp.com", // Replace this
+        databaseURL: "https://your-project.firebaseio.com", // Replace this
+        projectId: "your-project-id",               // Replace this
+        storageBucket: "your-project.appspot.com",  // Replace this
+        messagingSenderId: "123456789",              // Replace this
+        appId: "YOUR_APP_ID"                         // Replace this
+        // measurementId is optional
+      };
+
+      // Initialize Firebase
+      // This only runs once even if script is loaded multiple times
+      if (!window.firebaseInitialized) {
+        firebase.initializeApp(firebaseConfig);
+        window.firebaseInitialized = true;
+        console.log('[Firebase] Initialized with config');
+      }
+    </script>
+
+    <!-- Configuration Info -->
+    <script>
+      // Optional: Show which backend is being used
+      console.log('[Storage] Using Firebase Realtime Database');
+    </script>
+</head>
+<body>
+    <!-- Main App Container -->
+    <div id="app">
+        <!-- Your app content goes here -->
+    </div>
+
+    <!-- Global Storage with Firebase Backend -->
+    <script src="firebaseStorageAdapter.js"></script>
+    <script src="globalStorageAdapter.js"></script>
+    <script src="appStorageSync.js"></script>
+
+    <!-- Your Application Code -->
+    <script src="app.js"></script>
+
+    <!-- Initialize Application -->
+    <script>
+      async function initializeApplication() {
+        try {
+          console.log('[App] Initializing application...');
+
+          // Initialize global storage (uses Firebase backend)
+          await globalStorageAdapter.init({
+            autoPull: true,      // Load existing data from Firebase
+            overwrite: false     // Don't overwrite local data
+          });
+          console.log('[App] Global storage initialized');
+
+          // Initialize app-specific storage sync
+          await appStorageSync.init();
+          console.log('[App] App storage sync initialized');
+
+          console.log('[App] ✅ Ready! Global RealTime sync is active');
+        } catch (error) {
+          console.error('[App] Failed to initialize:', error);
+          alert('Failed to initialize app. Check console for details.');
+        }
+      }
+
+      // Start when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeApplication);
+      } else {
+        initializeApplication();
+      }
+
+      // Cleanup on page unload
+      window.addEventListener('beforeunload', () => {
+        if (window.storageSync && window.storageSync.stop) {
+          window.storageSync.stop();
+        }
+      });
+    </script>
+</body>
+</html>

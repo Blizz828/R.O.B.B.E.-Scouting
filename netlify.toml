@@ -1,0 +1,19 @@
+[build]
+  command = "echo 'No build step needed'"
+  publish = "."
+
+[dev]
+  port = 8888
+  targetPort = 8080
+
+# Configure API redirect for global storage
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Fallback to index.html for single-page app routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

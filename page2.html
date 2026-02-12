@@ -39,9 +39,31 @@
     </main>
 
     <footer>
-      <small>Stored in your browser (localStorage).</small>
+      <small>Stored locally and synced globally across all users.</small>
     </footer>
 
+    <!-- Global Storage Sync System -->
+    <script src="storageSync.js"></script>
+    <script src="globalStorageAdapter.js"></script>
+    
+    <!-- App Logic -->
     <script src="app.js"></script>
+    
+    <!-- App-specific Storage Sync -->
+    <script src="appStorageSync.js"></script>
+    
+    <!-- Initialize global storage on page load -->
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Initialize the global storage adapter
+        await globalStorageAdapter.init({ autoPull: true, overwrite: false });
+        
+        // Initialize app-specific storage sync for list entries
+        await appStorageSync.init();
+        appStorageSync.hookAppFunctions();
+        
+        console.log('Global storage and app sync initialized on page2.html');
+      });
+    </script>
   </body>
 </html>
