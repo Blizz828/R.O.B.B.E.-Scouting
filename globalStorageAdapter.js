@@ -28,7 +28,9 @@ const globalStorageAdapter = (function () {
       await storageSync.init(options);
 
       // Set up listener for global updates from server
-      storageSync.onUpdate = ({ key, value }) => {
+      // storageSync exposes `onUpdateCallback` setter for the internal callback.
+      // Use that to ensure storageSync invokes our handler on updates.
+      storageSync.onUpdateCallback = ({ key, value }) => {
         if (key && valueChangeCallbacks[key]) {
           valueChangeCallbacks[key].forEach(cb => {
             try {
