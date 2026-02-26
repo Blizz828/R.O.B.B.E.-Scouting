@@ -57,6 +57,18 @@ function broadcastUpdate(key, value) {
 
 const server = http.createServer((req, res) => {
   try {
+    // CORS headers for Netlify compatibility
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    // Handle OPTIONS requests for CORS preflight
+    if (req.method === 'OPTIONS') {
+      res.writeHead(200);
+      res.end();
+      return;
+    }
+
     const urlPath = decodeURI(req.url.split('?')[0]);
 
     // API: list or key-based storage

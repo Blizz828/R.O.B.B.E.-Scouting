@@ -276,6 +276,10 @@
     </script>
     
     <!-- Global Storage Sync System -->
+    <script>
+      // Netlify configuration: Use polling mode (serverless-compatible)
+      window.STORAGE_USE_POLLING = true;
+    </script>
     <script src="storageSync.js"></script>
     <script src="globalStorageAdapter.js"></script>
     
